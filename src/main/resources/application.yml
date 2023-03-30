@@ -1,0 +1,40 @@
+server:
+  port: 8183
+
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://106.54.183.43:3306/dor?useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2B8
+      username: root
+      password: city@spring#
+      # 最小空闲连接数
+      min-idle: 5
+      # 最大连接数
+      max-active: 10
+      # 连接请求超时时间
+      max-wait: 3000
+      # 测试连接是否可用的查询语句
+      validation-query: SELECT 1
+
+  redis:
+    port: 9587
+    host: 106.54.183.43
+    password: city@spring#
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+# 自定义百度aip信息
+accountInfo:
+  baidu:
+    APP_ID: 31242495
+    API_KEY: EfjQ5G2rObwigWihtWoOeGNu
+    SECRET_KEY: 7EFj8VGAy3rif45Enlk5g3kvpbxHq2Z3
+    IMAGE_TYPR: BASE64
+    GROUP_ID: user_face_id_8409
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false

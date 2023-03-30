@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.city.app.dao.mapper.DormitoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.city.app.dao.entity.Dormitory">
+        <id column="id" property="id" />
+        <result column="buildingId" property="buildingId" />
+        <result column="baseId" property="baseId" />
+        <result column="roomId" property="roomId"/>
+        <result column="waterId" property="waterId"/>
+        <result column="powerId" property="powerId"/>
+        <result column="gradeId" property="gradeId"/>
+    </resultMap>
+
+
+    <!--通用查询结果-->
+    <sql id="Base_Column_List">
+        id, buildingId, baseId, roomId, waterId, powerId, gradeId
+    </sql>
+
+    <select id="getDorInfoByUserId" resultType="com.city.app.common.vo.DormitoryVo">
+        SELECT
+            d.id,
+            building.`name` as building,
+            base.`name` as base,
+            room.`name` as room,
+            water_rate.cost as water,
+            power_rate.cost as powerRate,
+            grade.score as score
+        FROM
+            dormitory d LEFT JOIN building ON d.buildingId = building.id
+                        LEFT JOIN base ON d.baseId = base.id
+                        LEFT JOIN room ON d.roomId = room.id
+                        LEFT JOIN water_rate ON d.waterId = water_rate.id
+                        LEFT JOIN power_rate ON d.powerId = power_rate.id
+                        LEFT JOIN grade ON d.gradeId = grade.id
+        WHERE
+            d.id = (SELECT dormitoryId FROM `user` WHERE `user`.id = #{userId})
+    </select>
+
+    <select id="getBuildingByUserId" resultType="java.lang.String">
+        SELECT
+            b.`address`
+        FROM
+            `user` u,
+            dormitory d,
+            building b
+        WHERE
+            u.dormitoryId = d.id
+          AND
+            d.buildingId = b.id
+          AND
+            u.id = #{userId}
+    </select>
+
+    <select id="getDorWaterInfo" resultType="com.city.app.common.vo.CostVo">
+        SELECT
+            w.*,
+            r.`name` as room
+        FROM
+            `user` u,
+            dormitory d,
+            water_rate w,
+            room r
+        WHERE
+            u.id = #{userId}
+          AND
+            u.dormitoryId = d.id
+          AND
+            d.roomId = r.id
+          AND
+            d.waterId = w.id
+    </select>
+
+    <select id="getDorPowerInfo" resultType="com.city.app.common.vo.CostVo">
+        SELECT
+            p.*,
+            r.`name` as room
+        FROM
+            `user` u,
+            dormitory d,
+            power_rate p,
+            room r
+        WHERE
+            u.id = #{userId}
+          AND
+            u.dormitoryId = d.id
+          AND
+            d.roomId = r.id
+          AND
+            d.powerId = p.id
+    </select>
+
+    <select id="getDorGradeInfo" resultType="com.city.app.common.vo.GradeVo">
+        SELECT
+            g.*
+        FROM
+            `user` u,
+            dormitory d,
+            grade g
+
+        WHERE
+            u.id = #{userId}
+          AND
+            u.dormitoryId = d.id
+          AND
+            d.gradeId = g.id
+
+    </select>
+
+    <select id="getDorBuilding" resultType="com.city.app.common.vo.BuildingVo">
+        SELECT
+            b.id,
+            b.`name`
+        FROM
+            building as b
+    </select>
+
+    <select id="getDormitoryInfo" resultType="java.lang.Long">
+        SELECT
+            d.id
+        FROM
+            dormitory d
+        WHERE
+            d.buildingId = #{buildingId}
+          AND
+            d.roomId = #{roomId}
+    </select>
+
+    <select id="getBuildingRooms" resultType="com.city.app.dao.entity.Room">
+        SELECT
+            r.id,
+            r.`name`
+        FROM
+            room r
+        WHERE
+            r.buildingId = #{id}
+        ORDER BY
+            r.`name`
+    </select>
+
+</mapper>
