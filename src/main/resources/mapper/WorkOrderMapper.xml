@@ -37,5 +37,15 @@
             order_type
     </select>
 
+    <select id="getWorkOrderInfo" resultType="com.city.app.common.vo.WorkOrderVo">
+        SELECT
+            o.*,
+            t.type
+        FROM
+            work_order o LEFT JOIN order_type t ON o.typeId = t.id
+        WHERE
+            o.id = #{id}
+    </select>
+
 
 </mapper>

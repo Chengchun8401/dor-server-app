@@ -7,6 +7,7 @@ import com.city.app.common.param.PageParam;
 import com.city.app.common.param.WorkOrderParam;
 import com.city.app.common.vo.PageVo;
 import com.city.app.common.vo.Result;
+import com.city.app.common.vo.WorkOrderVo;
 import com.city.app.dao.entity.OrderType;
 import com.city.app.dao.entity.WorkOrder;
 import com.city.app.dao.mapper.WorkOrderMapper;
@@ -48,9 +49,9 @@ public class WorkOrderServiceImpl extends ServiceImpl<WorkOrderMapper, WorkOrder
         }
 
         PageVo pageVo = new PageVo();
-        Page<WorkOrder> page = new Page<>(param.getPage(), param.getPageSize());
+        Page<WorkOrderVo> page = new Page<>(param.getPage(), param.getPageSize());
 
-        IPage<WorkOrder> workOrderPage = workOrderMapper.getWorkOrderList(page, Long.parseLong(userId));
+        IPage<WorkOrderVo> workOrderPage = workOrderMapper.getWorkOrderList(page, Long.parseLong(userId));
         pageVo.setTotal(workOrderPage.getTotal());
         pageVo.setData(workOrderPage.getRecords());
 
@@ -59,7 +60,7 @@ public class WorkOrderServiceImpl extends ServiceImpl<WorkOrderMapper, WorkOrder
 
     @Override
     public Result getWorkOrderInfo(String id) {
-        WorkOrder workOrder = workOrderMapper.selectById(id);
+        WorkOrderVo workOrder = workOrderMapper.getWorkOrderInfo(Long.parseLong(id));
         if(workOrder == null){
             return Result.fail("工单信息获取失败", 11001);
         }

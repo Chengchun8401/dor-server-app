@@ -28,7 +28,6 @@ public class WorkOrderVo {
 
     private Integer status;
 
-    private Integer typeId;
-
     private String type;
+
 }

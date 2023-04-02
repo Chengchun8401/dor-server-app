@@ -3,6 +3,7 @@ package com.city.app.dao.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.city.app.common.vo.WorkOrderVo;
 import com.city.app.dao.entity.OrderType;
 import com.city.app.dao.entity.WorkOrder;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,8 +20,10 @@ import java.util.List;
 @Mapper
 public interface WorkOrderMapper extends BaseMapper<WorkOrder> {
 
-    IPage<WorkOrder> getWorkOrderList(Page<WorkOrder> page, @Param("userId") Long userId);
+    IPage<WorkOrderVo> getWorkOrderList(Page<WorkOrderVo> page, @Param("userId") Long userId);
 
     List<OrderType> getWorkOrderType();
+
+    WorkOrderVo getWorkOrderInfo(@Param("id") Long id);
 
 }
